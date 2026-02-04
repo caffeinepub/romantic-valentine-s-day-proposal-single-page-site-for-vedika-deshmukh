@@ -1,0 +1,135 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Layout fixes: hero video, background text, two-card moments section, and separate gallery page",
+  "requirements": [
+    {
+      "id": "REQ-16",
+      "summary": "Add a top-of-page hero video section above OpeningSection that renders exactly one uploaded romantic video with audio, no autoplay, and overlay text.",
+      "acceptanceCriteria": [
+        "The hero video section appears before the current OpeningSection content in frontend/src/App.tsx render order.",
+        "The hero video element does not use autoPlay and does not set muted=true by default.",
+        "The video includes visible user play controls (or an equivalent explicit play button UI) and only starts playback after a user gesture.",
+        "Only one video is rendered in the hero section even if multiple video assets exist.",
+        "Video is centered, rounded, has a soft shadow, and remains usable on mobile widths without overflow.",
+        "Overlay text “This video holds a piece of my heart 💖” is visible on top of the video."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/HeroVideoSection.tsx",
+          "operation": "create",
+          "description": "Create a new HeroVideoSection component that renders exactly one user-uploaded video from /assets (use a single explicit file reference) with controls enabled, no autoplay, not muted by default, rounded corners, soft shadow, and mobile-safe sizing; include the overlay text “This video holds a piece of my heart 💖”."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Wire HeroVideoSection into the main page render order so it appears above OpeningSection, ensuring it is the first visible hero area on the main stacked sections page."
+        }
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "summary": "Update OurMemoriesBackgroundSection to remove the title and show only a single romantic line over the low-opacity background photo.",
+      "acceptanceCriteria": [
+        "frontend/src/components/OurMemoriesBackgroundSection.tsx no longer renders the heading text “Our Memories 💖”.",
+        "The section renders exactly one line of user-facing text: “Every time I see you, my heart feels at home 💖”.",
+        "The background remains a single photo with low opacity and a readability overlay (no additional background images)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/OurMemoriesBackgroundSection.tsx",
+          "operation": "modify",
+          "description": "Remove the “Our Memories 💖” heading and update the content to display ONLY the line “Every time I see you, my heart feels at home 💖”, while keeping the single existing background photo and low-opacity + readability overlay behavior."
+        }
+      ]
+    },
+    {
+      "id": "REQ-18",
+      "summary": "Replace the 'Our Moments Together 💖' section body with exactly two clean, simple clickable cards beneath the heading.",
+      "acceptanceCriteria": [
+        "The “Our Moments Together 💖” section renders exactly two clickable card UI elements and nothing else beneath the heading.",
+        "No empty media placeholders are rendered anywhere in this section.",
+        "The section does not render a multi-item video grid like the current VideosSection implementation."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/VideosSection.tsx",
+          "operation": "modify",
+          "description": "Replace the current grid-of-videos behavior with a minimal two-card layout under the existing heading “Our Moments Together 💖”, rendering ONLY two clickable cards with texts: “Our Best Moments 💕” and “Memories That Mean Everything 💖”, and remove any video autoPlay/muted/loop rendering from this section."
+        }
+      ]
+    },
+    {
+      "id": "REQ-19",
+      "summary": "Navigate to a distinct new page/screen when either of the two cards in the moments section is clicked.",
+      "acceptanceCriteria": [
+        "Clicking either card changes to a different route/view/screen that is distinct from the main stacked sections page.",
+        "The main page content is not simply expanded in-place; the user is clearly navigated to a separate screen/page."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Introduce a simple client-side navigation mechanism (no new third-party auth) to support a distinct gallery route/view, and pass navigation handlers down to the moments/cards section so clicks transition to the separate gallery screen."
+        },
+        {
+          "path": "frontend/src/components/VideosSection.tsx",
+          "operation": "modify",
+          "description": "Wire the two cards to trigger navigation to the new gallery page/screen via a callback (or internal navigation helper) so the user is moved to a distinct route/view rather than expanding content in-place."
+        }
+      ]
+    },
+    {
+      "id": "REQ-20",
+      "summary": "Create a new gallery page/screen showing only 4–5 uploaded photos with a minimal romantic layout and soft heart animations only, with no placeholders.",
+      "acceptanceCriteria": [
+        "The gallery page renders only real uploaded photo files from /assets and never renders empty slots.",
+        "The gallery page shows up to 5 photos and does not exceed 5.",
+        "The only animation effects on the gallery page are soft heart/romantic floating-style effects (no heavy or crowded effects).",
+        "The gallery layout is minimal and not crowded on mobile and desktop."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/GalleryPage.tsx",
+          "operation": "create",
+          "description": "Create a GalleryPage screen that displays ONLY up to 5 uploaded photos from /assets (using an explicit curated list of known uploaded filenames and filtering out missing files at runtime), with a minimal responsive gallery layout and no empty placeholders; include a clear way to return to the main page."
+        },
+        {
+          "path": "frontend/src/components/SoftHeartsOverlay.tsx",
+          "operation": "create",
+          "description": "Create a lightweight, subtle floating-hearts-only overlay component (hearts only; no other emojis) suitable for the gallery page, keeping the effect soft and not crowded."
+        },
+        {
+          "path": "frontend/src/index.css",
+          "operation": "modify",
+          "description": "Add or adjust minimal CSS utilities/animations (if needed) to support the soft floating heart animation used on the gallery page, ensuring it remains subtle on mobile and desktop."
+        },
+        {
+          "path": "frontend/src/App.tsx",
+          "operation": "modify",
+          "description": "Register/wire the new GalleryPage into the app’s navigation so it is reachable as a distinct page/screen from the moments section cards."
+        }
+      ]
+    },
+    {
+      "id": "REQ-21",
+      "summary": "Enforce clean media rendering: remove placeholder generation and ensure only real uploaded media assets are shown anywhere.",
+      "acceptanceCriteria": [
+        "No section renders placeholder tiles/boxes for missing photos or videos.",
+        "All media shown in the UI corresponds to real files present in /assets."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/VideosSection.tsx",
+          "operation": "modify",
+          "description": "Remove any remaining logic that probes for multiple possible video filenames or produces multi-tile layouts; ensure this section never renders media placeholders and does not auto-generate missing media UI."
+        },
+        {
+          "path": "frontend/src/pages/GalleryPage.tsx",
+          "operation": "modify",
+          "description": "Ensure the gallery photo list is strictly limited to real uploaded assets (filter missing files and cap at 5) and never renders placeholder slots or empty frames when assets are missing."
+        }
+      ]
+    }
+  ]
+}

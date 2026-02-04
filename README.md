@@ -1,2 +1,3 @@
-# romantic-valentine-s-day-proposal-single-page-site-for-vedika-deshmukh
-Exported from Caffeine project: Romantic Valentine’s Day proposal single-page site for Vedika Deshmukh
+## 
+
+To run app build and run docker image: `docker build -t app . docker run -it --network host app`

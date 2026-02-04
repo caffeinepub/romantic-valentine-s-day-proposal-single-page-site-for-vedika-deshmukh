@@ -1,0 +1,110 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-04T20:59:38.053Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 6,
+    "implemented": 6,
+    "items": [
+      {
+        "id": "REQ-16",
+        "summary": "Add a new top-of-page hero video section placed above the existing OpeningSection that renders exactly ONE user-uploaded romantic video with audio and does not autoplay. The player must show a visible play control, must not be muted by default, and audio must only play after the user clicks play. Center the video with rounded corners, a soft shadow, and ensure the player is mobile-friendly. Overlay the text on the video: “This video holds a piece of my heart 💖”. Use ONLY the uploaded video (no stock videos).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/HeroVideoSection.tsx",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/HeroVideoSection.tsx",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-17",
+        "summary": "Update the full-screen background photo section (OurMemoriesBackgroundSection) to keep Vedika’s single photo as the low-opacity background, remove the “Our Memories 💖” title text entirely, and display ONLY this one romantic line over the photo: “Every time I see you, my heart feels at home 💖”.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/OurMemoriesBackgroundSection.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/OurMemoriesBackgroundSection.tsx"
+        ]
+      },
+      {
+        "id": "REQ-18",
+        "summary": "Replace the current “Our Moments Together 💖” section content so that below the heading it shows ONLY TWO clean, simple clickable cards (no grid of many items and no empty placeholders): Card 1 text: “Our Best Moments 💕”; Card 2 text: “Memories That Mean Everything 💖”.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/VideosSection.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/VideosSection.tsx"
+        ]
+      },
+      {
+        "id": "REQ-19",
+        "summary": "Implement navigation so that clicking either of the two “Our Moments Together 💖” cards opens a NEW page/screen (not an in-place expansion on the same screen).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/App.tsx",
+          "frontend/src/components/VideosSection.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/App.tsx",
+          "frontend/src/components/VideosSection.tsx"
+        ]
+      },
+      {
+        "id": "REQ-20",
+        "summary": "Create the new gallery page/screen that displays ONLY 4–5 uploaded photos using a simple romantic gallery layout with soft heart animations only. Do not render any extra empty placeholders or auto-generated image slots; render only the exact photo assets that exist. If fewer than 4 photos are available in the assets, render only the available uploaded photos (still without placeholders).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/pages/GalleryPage.tsx",
+          "frontend/src/components/SoftHeartsOverlay.tsx",
+          "frontend/src/index.css",
+          "frontend/src/App.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/pages/GalleryPage.tsx",
+          "frontend/src/components/SoftHeartsOverlay.tsx",
+          "frontend/src/index.css",
+          "frontend/src/App.tsx"
+        ]
+      },
+      {
+        "id": "REQ-21",
+        "summary": "Enforce the clean layout rule across media rendering: do not auto-generate any additional image/video placeholders anywhere; use only user-uploaded media assets. Specifically, remove/replace any existing logic that results in multiple empty boxes (e.g., the current VideosSection grid behavior) so that missing assets cause the section to render nothing or only valid media.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/VideosSection.tsx",
+          "frontend/src/pages/GalleryPage.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/VideosSection.tsx",
+          "frontend/src/pages/GalleryPage.tsx"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "build-request.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/src/App.tsx",
+    "frontend/src/components/HeroVideoSection.tsx",
+    "frontend/src/components/OurMemoriesBackgroundSection.tsx",
+    "frontend/src/components/SoftHeartsOverlay.tsx",
+    "frontend/src/components/VideosSection.tsx",
+    "frontend/src/index.css",
+    "frontend/src/pages/GalleryPage.tsx",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}

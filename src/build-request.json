@@ -1,0 +1,137 @@
+{
+  "kind": "build_request",
+  "title": "Fix layout: hero audio video, background photo text, two-card moments section, and separate gallery page",
+  "priority": "high",
+  "requirements": [
+    {
+      "id": "REQ-16",
+      "text": "Add a new top-of-page hero video section placed above the existing OpeningSection that renders exactly ONE user-uploaded romantic video with audio and does not autoplay. The player must show a visible play control, must not be muted by default, and audio must only play after the user clicks play. Center the video with rounded corners, a soft shadow, and ensure the player is mobile-friendly. Overlay the text on the video: “This video holds a piece of my heart 💖”. Use ONLY the uploaded video (no stock videos).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Add ONE romantic video at the very top of the website (hero section). This video must include AUDIO.",
+          "Show a visible Play ▶️ button • Do NOT autoplay the video • Audio should play ONLY after user clicks play • Do NOT mute the video by default • Use ONLY the uploaded video • Do NOT use stock videos",
+          "Overlay text on video: “This video holds a piece of my heart 💖”"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The hero video section appears before the current OpeningSection content in frontend/src/App.tsx render order.",
+        "The hero video element does not use autoPlay and does not set muted=true by default.",
+        "The video includes visible user play controls (or an equivalent explicit play button UI) and only starts playback after a user gesture.",
+        "Only one video is rendered in the hero section even if multiple video assets exist.",
+        "Video is centered, rounded, has a soft shadow, and remains usable on mobile widths without overflow.",
+        "Overlay text “This video holds a piece of my heart 💖” is visible on top of the video."
+      ]
+    },
+    {
+      "id": "REQ-17",
+      "text": "Update the full-screen background photo section (OurMemoriesBackgroundSection) to keep Vedika’s single photo as the low-opacity background, remove the “Our Memories 💖” title text entirely, and display ONLY this one romantic line over the photo: “Every time I see you, my heart feels at home 💖”.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Keep Vedika’s single photo as the background with low opacity. REMOVE the text “Our Memories”. Instead, place ONLY one romantic line on her photo: “Every time I see you, my heart feels at home 💖”"
+        ]
+      },
+      "acceptanceCriteria": [
+        "frontend/src/components/OurMemoriesBackgroundSection.tsx no longer renders the heading text “Our Memories 💖”.",
+        "The section renders exactly one line of user-facing text: “Every time I see you, my heart feels at home 💖”.",
+        "The background remains a single photo with low opacity and a readability overlay (no additional background images)."
+      ]
+    },
+    {
+      "id": "REQ-18",
+      "text": "Replace the current “Our Moments Together 💖” section content so that below the heading it shows ONLY TWO clean, simple clickable cards (no grid of many items and no empty placeholders): Card 1 text: “Our Best Moments 💕”; Card 2 text: “Memories That Mean Everything 💖”.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Keep the heading: “Our Moments Together 💖”",
+          "Below this heading, show ONLY TWO clickable cards. Do NOT show multiple empty photo boxes. Do NOT show a grid.",
+          "Card 1: “Our Best Moments 💕” Card 2: “Memories That Mean Everything 💖”"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The “Our Moments Together 💖” section renders exactly two clickable card UI elements and nothing else beneath the heading.",
+        "No empty media placeholders are rendered anywhere in this section.",
+        "The section does not render a multi-item video grid like the current VideosSection implementation."
+      ]
+    },
+    {
+      "id": "REQ-19",
+      "text": "Implement navigation so that clicking either of the two “Our Moments Together 💖” cards opens a NEW page/screen (not an in-place expansion on the same screen).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "When clicking on any card: Open a NEW PAGE or NEW SCREEN (not the same page)."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Clicking either card changes to a different route/view/screen that is distinct from the main stacked sections page.",
+        "The main page content is not simply expanded in-place; the user is clearly navigated to a separate screen/page."
+      ]
+    },
+    {
+      "id": "REQ-20",
+      "text": "Create the new gallery page/screen that displays ONLY 4–5 uploaded photos using a simple romantic gallery layout with soft heart animations only. Do not render any extra empty placeholders or auto-generated image slots; render only the exact photo assets that exist. If fewer than 4 photos are available in the assets, render only the available uploaded photos (still without placeholders).",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "On the new page, display ONLY 4–5 uploaded photos. Use a simple romantic gallery layout. No extra empty placeholders. Add soft heart animations only.",
+          "Do NOT auto-generate extra image slots. Use ONLY the photos I upload."
+        ]
+      },
+      "acceptanceCriteria": [
+        "The gallery page renders only real uploaded photo files from /assets and never renders empty slots.",
+        "The gallery page shows up to 5 photos and does not exceed 5.",
+        "The only animation effects on the gallery page are soft heart/romantic floating-style effects (no heavy or crowded effects).",
+        "The gallery layout is minimal and not crowded on mobile and desktop."
+      ]
+    },
+    {
+      "id": "REQ-21",
+      "text": "Enforce the clean layout rule across media rendering: do not auto-generate any additional image/video placeholders anywhere; use only user-uploaded media assets. Specifically, remove/replace any existing logic that results in multiple empty boxes (e.g., the current VideosSection grid behavior) so that missing assets cause the section to render nothing or only valid media.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "Do NOT auto-generate extra image slots. Use ONLY the photos I upload. Keep the design minimal and emotional, not crowded."
+        ]
+      },
+      "acceptanceCriteria": [
+        "No section renders placeholder tiles/boxes for missing photos or videos.",
+        "All media shown in the UI corresponds to real files present in /assets."
+      ]
+    }
+  ],
+  "constraints": [
+    "Frontend must not edit files under frontend/immutablePaths (compose existing UI components instead).",
+    "Hero video must not autoplay and must not be muted by default; audio must only play after a user click/play gesture.",
+    "Use ONLY user-uploaded media; do not add stock photos or stock videos.",
+    "Do not render empty media placeholders or auto-generated slots anywhere."
+  ],
+  "nonGoals": [
+    "No backend (Motoko) feature work is required for this layout correction.",
+    "Do not add third-party auth beyond Internet Identity.",
+    "Do not add additional sections or new content beyond what is requested."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}
