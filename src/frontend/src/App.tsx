@@ -3,21 +3,33 @@ import { HeroVideoSection } from './components/HeroVideoSection';
 import { OpeningSection } from './components/OpeningSection';
 import { OurMemoriesBackgroundSection } from './components/OurMemoriesBackgroundSection';
 import { OurBestMemoriesSection } from './components/OurBestMemoriesSection';
+import { UnlockMomentsPuzzleSection } from './components/UnlockMomentsPuzzleSection';
 import { VideosSection } from './components/VideosSection';
 import { ProposalSection } from './components/ProposalSection';
 import { SorrySection } from './components/SorrySection';
 import { FinalMessageSection } from './components/FinalMessageSection';
 import { MusicToggle } from './components/MusicToggle';
-import { GalleryPage } from './pages/GalleryPage';
+import { PhotosPage } from './pages/PhotosPage';
+import { VideosPage } from './pages/VideosPage';
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<'home' | 'gallery'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'photos' | 'videos'>('home');
+  const [isPuzzleSolved, setIsPuzzleSolved] = useState(false);
 
-  const navigateToGallery = () => setCurrentPage('gallery');
+  const navigateToPhotos = () => setCurrentPage('photos');
+  const navigateToVideos = () => setCurrentPage('videos');
   const navigateToHome = () => setCurrentPage('home');
 
-  if (currentPage === 'gallery') {
-    return <GalleryPage onBack={navigateToHome} />;
+  const handlePuzzleSolved = () => {
+    setIsPuzzleSolved(true);
+  };
+
+  if (currentPage === 'photos') {
+    return <PhotosPage onBack={navigateToHome} />;
+  }
+
+  if (currentPage === 'videos') {
+    return <VideosPage onBack={navigateToHome} />;
   }
 
   return (
@@ -29,7 +41,15 @@ function App() {
         <OpeningSection />
         <OurMemoriesBackgroundSection />
         <OurBestMemoriesSection />
-        <VideosSection onNavigateToGallery={navigateToGallery} />
+        <UnlockMomentsPuzzleSection 
+          onPuzzleSolved={handlePuzzleSolved}
+          isSolved={isPuzzleSolved}
+        />
+        <VideosSection 
+          onNavigateToPhotos={navigateToPhotos}
+          onNavigateToVideos={navigateToVideos}
+          isLocked={!isPuzzleSolved}
+        />
         <ProposalSection />
         <SorrySection />
         <FinalMessageSection />

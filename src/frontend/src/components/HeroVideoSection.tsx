@@ -26,7 +26,8 @@ export function HeroVideoSection() {
           <div className="relative overflow-hidden rounded-3xl shadow-romantic-lg">
             <video
               ref={videoRef}
-              src="/assets/Snapchat-1188898064.mp4"
+              // MOST RECENTLY UPLOADED VIDEO: lv_7589285474783595777_20260102143017-2.mp4 - This is the latest uploaded asset and is intentionally the only hero source to prevent reuse of older media.
+              src="/assets/lv_7589285474783595777_20260102143017-2.mp4"
               className="w-full h-auto"
               playsInline
               onPlay={() => setIsPlaying(true)}

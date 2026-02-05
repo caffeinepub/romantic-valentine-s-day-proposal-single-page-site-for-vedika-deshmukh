@@ -1,7 +1,7 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-04T20:59:38.053Z",
+  "generatedAt": "2026-02-05T07:02:27.404Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
@@ -11,81 +11,76 @@
     "implemented": 6,
     "items": [
       {
-        "id": "REQ-16",
-        "summary": "Add a new top-of-page hero video section placed above the existing OpeningSection that renders exactly ONE user-uploaded romantic video with audio and does not autoplay. The player must show a visible play control, must not be muted by default, and audio must only play after the user clicks play. Center the video with rounded corners, a soft shadow, and ensure the player is mobile-friendly. Overlay the text on the video: “This video holds a piece of my heart 💖”. Use ONLY the uploaded video (no stock videos).",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/HeroVideoSection.tsx",
-          "frontend/src/App.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/HeroVideoSection.tsx",
-          "frontend/src/App.tsx"
-        ]
-      },
-      {
-        "id": "REQ-17",
-        "summary": "Update the full-screen background photo section (OurMemoriesBackgroundSection) to keep Vedika’s single photo as the low-opacity background, remove the “Our Memories 💖” title text entirely, and display ONLY this one romantic line over the photo: “Every time I see you, my heart feels at home 💖”.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/OurMemoriesBackgroundSection.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/OurMemoriesBackgroundSection.tsx"
-        ]
-      },
-      {
-        "id": "REQ-18",
-        "summary": "Replace the current “Our Moments Together 💖” section content so that below the heading it shows ONLY TWO clean, simple clickable cards (no grid of many items and no empty placeholders): Card 1 text: “Our Best Moments 💕”; Card 2 text: “Memories That Mean Everything 💖”.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/VideosSection.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/VideosSection.tsx"
-        ]
-      },
-      {
         "id": "REQ-19",
-        "summary": "Implement navigation so that clicking either of the two “Our Moments Together 💖” cards opens a NEW page/screen (not an in-place expansion on the same screen).",
+        "summary": "Add a new Home-page section placed directly above the existing “Our Moments Together 💖” section with the heading text exactly: “Unlock Our Moments 💖”. This new section must not modify any existing sections’ layout, text, colors, gradients, animations, or order other than inserting this new section in-between the existing sections.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/App.tsx",
-          "frontend/src/components/VideosSection.tsx"
+          "frontend/src/components/UnlockMomentsPuzzleSection.tsx",
+          "frontend/src/App.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/App.tsx",
-          "frontend/src/components/VideosSection.tsx"
+          "frontend/src/components/UnlockMomentsPuzzleSection.tsx",
+          "frontend/src/App.tsx"
         ]
       },
       {
         "id": "REQ-20",
-        "summary": "Create the new gallery page/screen that displays ONLY 4–5 uploaded photos using a simple romantic gallery layout with soft heart animations only. Do not render any extra empty placeholders or auto-generated image slots; render only the exact photo assets that exist. If fewer than 4 photos are available in the assets, render only the available uploaded photos (still without placeholders).",
+        "summary": "Implement a simple, cute, touch-friendly photo puzzle inside the new “Unlock Our Moments 💖” section using ONLY the uploaded image file `Snapchat-1757390130.jpg` as a static asset (no generated/random images). Split the photo into 4–6 easy pieces (default to an easy configuration) and make the interaction smooth and mobile-optimized.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/pages/GalleryPage.tsx",
-          "frontend/src/components/SoftHeartsOverlay.tsx",
-          "frontend/src/index.css",
-          "frontend/src/App.tsx"
+          "frontend/src/components/UnlockMomentsPuzzleSection.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/pages/GalleryPage.tsx",
-          "frontend/src/components/SoftHeartsOverlay.tsx",
-          "frontend/src/index.css",
-          "frontend/src/App.tsx"
+          "frontend/src/components/UnlockMomentsPuzzleSection.tsx"
         ]
       },
       {
         "id": "REQ-21",
-        "summary": "Enforce the clean layout rule across media rendering: do not auto-generate any additional image/video placeholders anywhere; use only user-uploaded media assets. Specifically, remove/replace any existing logic that results in multiple empty boxes (e.g., the current VideosSection grid behavior) so that missing assets cause the section to render nothing or only valid media.",
+        "summary": "In the “Unlock Our Moments 💖” section, display the instruction text exactly: “Solve this little puzzle to unlock our memories 💕”.",
         "status": "implemented",
         "plannedFiles": [
-          "frontend/src/components/VideosSection.tsx",
-          "frontend/src/pages/GalleryPage.tsx"
+          "frontend/src/components/UnlockMomentsPuzzleSection.tsx"
         ],
         "matchedFiles": [
-          "frontend/src/components/VideosSection.tsx",
-          "frontend/src/pages/GalleryPage.tsx"
+          "frontend/src/components/UnlockMomentsPuzzleSection.tsx"
+        ]
+      },
+      {
+        "id": "REQ-22",
+        "summary": "Gate the two existing cards in `frontend/src/components/VideosSection.tsx` (Card 1: “Our Best Moments 💕”, Card 2: “Memories That Mean Everything 💖”) behind the puzzle: initially both cards must be LOCKED 🔒 (visually blurred/disabled) and not clickable; after puzzle completion, both cards must unlock by removing the blur/disabled state and enabling clicking. After unlock, both cards must behave exactly as currently defined (same onClick navigation). Do not change the cards’ existing layout, styling, text, animations, gradients, or the surrounding “Our Moments Together 💖” section besides adding the locked/disabled overlay state and click blocking while locked.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/App.tsx",
+          "frontend/src/components/VideosSection.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/App.tsx",
+          "frontend/src/components/VideosSection.tsx"
+        ]
+      },
+      {
+        "id": "REQ-23",
+        "summary": "When the puzzle is solved correctly, show the success message exactly: “You did it 🥰 Just like us, everything fits perfectly 💖” and play a soft heart animation in/over the puzzle section. The heart animation should feel romantic and subtle (not intense or distracting).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/src/components/UnlockMomentsPuzzleSection.tsx",
+          "frontend/src/index.css"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/UnlockMomentsPuzzleSection.tsx",
+          "frontend/src/index.css"
+        ]
+      },
+      {
+        "id": "REQ-24",
+        "summary": "Add the uploaded image `Snapchat-1757390130.jpg` to the frontend public static assets and reference it by its exact filename for the puzzle (no backend involvement).",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/public/assets/Snapchat-1757390130.jpg",
+          "frontend/src/components/UnlockMomentsPuzzleSection.tsx"
+        ],
+        "matchedFiles": [
+          "frontend/src/components/UnlockMomentsPuzzleSection.tsx"
         ]
       }
     ]
@@ -96,12 +91,9 @@
     "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
     "frontend/src/App.tsx",
-    "frontend/src/components/HeroVideoSection.tsx",
-    "frontend/src/components/OurMemoriesBackgroundSection.tsx",
-    "frontend/src/components/SoftHeartsOverlay.tsx",
+    "frontend/src/components/UnlockMomentsPuzzleSection.tsx",
     "frontend/src/components/VideosSection.tsx",
     "frontend/src/index.css",
-    "frontend/src/pages/GalleryPage.tsx",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",

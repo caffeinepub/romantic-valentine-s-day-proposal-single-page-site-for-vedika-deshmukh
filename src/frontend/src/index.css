@@ -162,6 +162,23 @@
     }
 }
 
+@keyframes puzzle-heart-float {
+    0% {
+        transform: translateY(0) scale(0.5) rotate(0deg);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-200px) scale(1.2) rotate(15deg);
+        opacity: 0;
+    }
+}
+
 .animate-float-up {
     animation: float-up linear forwards;
 }
@@ -187,4 +204,19 @@
 .section-reveal.visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Puzzle celebration hearts */
+.puzzle-celebration-hearts {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.puzzle-heart {
+    position: absolute;
+    bottom: 0;
+    font-size: 2rem;
+    animation: puzzle-heart-float linear forwards;
 }
