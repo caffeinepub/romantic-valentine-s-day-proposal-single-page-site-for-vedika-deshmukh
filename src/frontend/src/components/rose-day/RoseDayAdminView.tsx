@@ -68,12 +68,14 @@ export function RoseDayAdminView({ onClose }: RoseDayAdminViewProps) {
             {!isLoading && !error && submissions.length > 0 && (
               <ScrollArea className="h-[600px] pr-4">
                 <div className="space-y-6">
-                  {submissions.map(([principal, submission], index) => (
-                    <div key={principal.toString()} className="space-y-3">
+                  {submissions.map((submission, index) => (
+                    <div key={submission.id} className="space-y-3">
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <span className="font-medium text-rose-600">Submission #{index + 1}</span>
                         <span className="text-xs font-mono bg-rose-50 px-2 py-1 rounded">
-                          {principal.toString().slice(0, 8)}...
+                          {submission.submitter === 'Anonymous' 
+                            ? 'Anonymous' 
+                            : `${submission.submitter.slice(0, 8)}...`}
                         </span>
                       </div>
                       

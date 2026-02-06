@@ -111,7 +111,7 @@ export enum UserRole {
 export interface backendInterface {
     _initializeAccessControlWithSecret(userSecret: string): Promise<void>;
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
-    getAllSubmissions(): Promise<Array<[Principal, Submission]>>;
+    getAllSubmissions(): Promise<Array<[string, Submission]>>;
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
     getSubmissionSummary(): Promise<Summary>;
@@ -151,7 +151,7 @@ export class Backend implements backendInterface {
             return result;
         }
     }
-    async getAllSubmissions(): Promise<Array<[Principal, Submission]>> {
+    async getAllSubmissions(): Promise<Array<[string, Submission]>> {
         if (this.processError) {
             try {
                 const result = await this.actor.getAllSubmissions();

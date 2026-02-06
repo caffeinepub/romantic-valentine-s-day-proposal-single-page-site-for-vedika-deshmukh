@@ -6,6 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, AlertCircle } from 'lucide-react';
 import { useSubmitRoseDayAnswers } from '@/hooks/useSubmitRoseDayAnswers';
+import { isCorrectRoseDayDateAnswer } from '@/utils/roseDayAnswerValidation';
 
 interface RoseDayQuestionsWizardProps {
   onComplete: (answers: [string, string, string]) => void;
@@ -13,14 +14,15 @@ interface RoseDayQuestionsWizardProps {
 
 const questions = [
   "When was our first kiss?",
-  "When did you give me my first chocolate?",
-  "How many roses have I given you till now?"
+  "When is our anniversary?",
+  "When did we go to Bamboo Garden for the first time?"
 ];
 
 export function RoseDayQuestionsWizard({ onComplete }: RoseDayQuestionsWizardProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<string[]>(['', '', '']);
   const [currentAnswer, setCurrentAnswer] = useState('');
+  const [validationMessage, setValidationMessage] = useState('');
   
   const { submitAnswers, isSubmitting, error, retry } = useSubmitRoseDayAnswers();
 
@@ -28,6 +30,17 @@ export function RoseDayQuestionsWizard({ onComplete }: RoseDayQuestionsWizardPro
 
   const handleNext = () => {
     if (!isAnswerValid) return;
+    
+    // Validate the answer
+    const isCorrect = isCorrectRoseDayDateAnswer(currentStep, currentAnswer);
+    
+    if (!isCorrect) {
+      setValidationMessage('Try again 😊');
+      return;
+    }
+
+    // Clear validation message on correct answer
+    setValidationMessage('');
     
     const newAnswers = [...answers];
     newAnswers[currentStep] = currentAnswer.trim();
@@ -37,7 +50,7 @@ export function RoseDayQuestionsWizard({ onComplete }: RoseDayQuestionsWizardPro
       setCurrentStep(currentStep + 1);
       setCurrentAnswer(newAnswers[currentStep + 1] || '');
     } else {
-      // Submit all answers
+      // Submit all answers only after all three are validated
       handleSubmit(newAnswers as [string, string, string]);
     }
   };
@@ -56,6 +69,14 @@ export function RoseDayQuestionsWizard({ onComplete }: RoseDayQuestionsWizardPro
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && isAnswerValid && !isSubmitting) {
       handleNext();
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCurrentAnswer(e.target.value);
+    // Clear validation message when user starts typing
+    if (validationMessage) {
+      setValidationMessage('');
     }
   };
 
@@ -91,13 +112,18 @@ export function RoseDayQuestionsWizard({ onComplete }: RoseDayQuestionsWizardPro
               id="answer"
               type="text"
               value={currentAnswer}
-              onChange={(e) => setCurrentAnswer(e.target.value)}
+              onChange={handleInputChange}
               onKeyPress={handleKeyPress}
               placeholder="Type your answer here..."
               className="text-lg py-6 border-2 border-rose-200 focus:border-rose-400 focus:ring-rose-400"
               disabled={isSubmitting}
               autoFocus
             />
+            {validationMessage && (
+              <p className="text-sm text-rose-500 font-medium animate-pulse">
+                {validationMessage}
+              </p>
+            )}
           </div>
 
           {error && (

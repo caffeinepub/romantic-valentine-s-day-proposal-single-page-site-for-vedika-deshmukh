@@ -1,205 +1,87 @@
 {
   "kind": "build_request",
-  "title": "Romantic Rose Day unlock website with 3 questions, hidden admin answers, and rose-petal animations",
-  "priority": "normal",
+  "title": "Redeploy app to a fresh live instance without any code or content changes",
+  "priority": "high",
   "requirements": [
     {
       "id": "REQ-1",
-      "text": "Replace the current frontend experience with a new, standalone, mobile-first Rose Day interactive website flow consisting of: (1) Lock screen intro, (2) 3-step typed-question unlock flow, (3) Rose Day reveal page, plus an optional hidden admin/owner view.",
-      "target": "frontend",
+      "text": "Deploy the application to a fresh live instance while keeping the exact same configuration and content (no changes to source code, assets, canister logic, or user-facing text).",
+      "target": "unknown",
       "source": {
         "messageIds": [
-          "msg-1",
-          "msg-2"
+          "recent-messages-3"
         ],
         "quotes": [
-          "Create a romantic and flirty Rose Day interactive website that opens only after answering 3 questions.",
-          "Create new app"
+          "Please deploy this app using a fresh live instance.\nKeep the same configuration and content."
         ]
       },
       "acceptanceCriteria": [
-        "On first load, the user sees the Rose Day lock screen (not the existing Valentine/proposal multi-section home).",
-        "The Rose Day flow is usable on mobile screens (e.g., 360px width) without horizontal scrolling.",
-        "All user-facing text is in English."
+        "A new live deployment is created (fresh instance) and is reachable via a live URL.",
+        "No source code files, assets, or configuration values are modified as part of this change.",
+        "The deployed app behavior and content match the prior live deployment (no functional or copy changes)."
       ]
     },
     {
       "id": "REQ-2",
-      "text": "Implement the Opening Screen as a lock-screen style view with the exact text “Only someone special can unlock this Rose Day surprise 🌹” and a primary CTA button labeled exactly “Unlock My Rose Day Gift ❤️” that transitions into the question flow.",
-      "target": "frontend",
+      "text": "If the deployment fails after a successful build, retry deployment using the current build artifacts without rebuilding and without changing any app logic/content.",
+      "target": "unknown",
       "source": {
         "messageIds": [
-          "msg-2"
+          "project_state.json-6..8"
         ],
         "quotes": [
-          "Opening Screen:\nShow a romantic lock screen with text:\n“Only someone special can unlock this Rose Day surprise 🌹”\nAdd a button: “Unlock My Rose Day Gift ❤️”"
+          "Deployment failed after successful build; user requests retry deployment and fallback redeploy using last successful build without changing app logic/content."
         ]
       },
       "acceptanceCriteria": [
-        "The opening screen text matches exactly (including emoji).",
-        "Tapping/clicking the CTA transitions to Question 1 with a smooth animation/transition.",
-        "The CTA is clearly tappable and accessible (button element, visible focus state)."
+        "On deployment failure, the system performs at least one retry using the same build artifacts (no rebuild).",
+        "The retry does not introduce any code/config/content changes."
       ]
     },
     {
       "id": "REQ-3",
-      "text": "Implement the mandatory Question Section as a 3-step wizard showing one question at a time with a typing input field, requiring a non-empty typed answer before the user can proceed to the next question.",
-      "target": "frontend",
+      "text": "If retrying deployment fails with the same error, redeploy the last known successful build artifacts exactly as-is (no rebuild and no code changes).",
+      "target": "unknown",
       "source": {
         "messageIds": [
-          "msg-2"
+          "project_state.json-20..27"
         ],
         "quotes": [
-          "Question Section (Mandatory – User must type answers):\nShow one question at a time with a typing input field.\n...\nEach question must require the user to type an answer before moving to the next question."
+          "If the deployment retry fails with the same error, redeploy the last known successful build artifacts exactly as-is (no rebuild or code changes)."
         ]
       },
       "acceptanceCriteria": [
-        "Question 1 is exactly: “When was our first kiss?”",
-        "Question 2 is exactly: “When did you give me my first chocolate?”",
-        "Question 3 is exactly: “How many roses have I given you till now?”",
-        "The “Next”/continue action is disabled or blocked until the input contains at least 1 non-whitespace character.",
-        "Navigation proceeds strictly in order: Q1 → Q2 → Q3 → Reveal (no skipping)."
+        "If the retry fails with the same error, the system attempts a fallback redeploy using the last known successful artifacts without rebuilding.",
+        "Fallback redeploy does not modify any source code, assets, or configuration."
       ]
     },
     {
       "id": "REQ-4",
-      "text": "Persist the three typed answers and submit them to the backend as a single submission when the user completes Question 3, then transition to the Rose Day reveal page only after a successful submission.",
-      "target": "both",
+      "text": "If deployment still fails after retry and fallback redeploy attempts, capture and report the deployment failure details (error message and the step where it occurred) without making any code changes.",
+      "target": "unknown",
       "source": {
         "messageIds": [
-          "msg-2"
+          "project_state.json-28..35"
         ],
         "quotes": [
-          "Answer Visibility (Very Important):\nStore and display all typed answers in a hidden owner/admin section or submission summary panel so that I (the creator) can see exactly what answers she typed."
+          "Capture and report the deployment failure details (error message and step where it occurred) if the retry still fails after attempting the fallback redeploy, without making any code changes."
         ]
       },
       "acceptanceCriteria": [
-        "On completing Q3, the frontend calls a backend method that stores Q1/Q2/Q3 answers together in one record.",
-        "If the backend call fails, the user remains on the last step and sees a clear, English error message with an option to retry submission.",
-        "After successful submission, the user is transitioned to the reveal page with a smooth animation."
-      ]
-    },
-    {
-      "id": "REQ-5",
-      "text": "Add Motoko backend storage and APIs to record and retrieve submissions containing all three answers exactly as typed, so the creator can review what was entered later.",
-      "target": "backend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "Store and display all typed answers in a hidden owner/admin section or submission summary panel so that I (the creator) can see exactly what answers she typed."
-        ]
-      },
-      "acceptanceCriteria": [
-        "Backend exposes an update method to create a submission containing q1, q2, q3 and a created-at timestamp.",
-        "Backend exposes a query method to list stored submissions (including the exact q1/q2/q3 text values).",
-        "Stored submissions persist across page refreshes and canister restarts/upgrades via stable storage.",
-        "No additional backend canisters/services are introduced (single-actor only)."
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "text": "Implement a hidden owner/admin section in the frontend that allows the creator to view a submissions list (including the exact answers typed for Q1/Q2/Q3) fetched from the backend.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "Store and display all typed answers in a hidden owner/admin section or submission summary panel so that I (the creator) can see exactly what answers she typed."
-        ]
-      },
-      "acceptanceCriteria": [
-        "There is a discoverable-but-hidden way to open the admin view (e.g., a URL toggle like a query param or hash).",
-        "The admin view displays a list of submissions with the three answers shown verbatim (no masking or truncation by default).",
-        "The admin view is not shown during the normal lock → questions → reveal experience unless explicitly opened."
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "text": "Implement the Rose Day reveal page shown after all 3 questions are completed, including the provided romantic message in a stylish, premium-feel typography and a footer line exactly: “Unlocked with love, only for Vedu 🌹”.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "After All 3 Questions – Unlock Rose Day Page:\nReveal the Rose Day surprise page with soft animation.\nDisplay this romantic & flirty message in a stylish font:\n**“This Rose Day, I won’t send you a rose, Vedu…\nBecause roses fade, but my feelings for you don’t.\nYour smile flirts with my heart,\nyour eyes steal my calm,\nand somehow… you don’t even try.\nIf love had a favorite person,\nit would always be you, Vedu.\nHappy Rose Day, my beautiful Vedu 🌹❤️”**\n...\nFooter:\nAdd a small romantic footer line: “Unlocked with love, only for Vedu 🌹”"
-        ]
-      },
-      "acceptanceCriteria": [
-        "The reveal page displays the message text exactly as provided (including punctuation, line breaks/formatting as closely as feasible, and emojis).",
-        "The footer line matches exactly (including emoji).",
-        "The reveal appears with a soft animation/transition (no abrupt cut)."
-      ]
-    },
-    {
-      "id": "REQ-8",
-      "text": "Add the reveal-page button labeled exactly “This rose is only for you, Vedu 🌹”; when clicked, show a soft popup/dialog with the exact text “You’re my forever rose ❤️”.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "Button Interaction:\nAdd a button: “This rose is only for you, Vedu 🌹”\nOn click, show a soft popup: “You’re my forever rose ❤️”"
-        ]
-      },
-      "acceptanceCriteria": [
-        "The reveal button label matches exactly (including emoji).",
-        "Clicking/tapping opens a modal/popup with the exact popup text (including emoji).",
-        "The popup can be dismissed via an explicit close action and by typical dialog interactions (e.g., close button / escape)."
-      ]
-    },
-    {
-      "id": "REQ-9",
-      "text": "Apply a rose-themed visual design using soft red, pink, and white, with smooth transitions and a floating rose petals animation overlay that feels elegant and not distracting.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "The website should be mobile-first, elegant, and emotional with rose-themed design.\nUse soft red, pink, and white colors, floating rose petals animation, and smooth transitions."
-        ]
-      },
-      "acceptanceCriteria": [
-        "A rose-petal floating animation is visible on the main user flow screens (lock, questions, reveal) and does not block interactions (pointer-events disabled).",
-        "Colors and styling match a soft red/pink/white premium Valentine-style feel (no harsh/neon palette).",
-        "Transitions between lock/questions/reveal are smooth (e.g., fade/slide), consistent, and performant on mobile."
-      ]
-    },
-    {
-      "id": "REQ-10",
-      "text": "Include optional romantic background music controlled by a user-initiated toggle (no autoplay) and ensure the site remains fully functional if the audio asset is missing.",
-      "target": "frontend",
-      "source": {
-        "messageIds": [
-          "msg-2"
-        ],
-        "quotes": [
-          "Use smooth scrolling, romantic music (optional), and a premium Valentine-style feel."
-        ]
-      },
-      "acceptanceCriteria": [
-        "Music playback starts only after a user gesture (tap/click).",
-        "If the configured audio file is not available, the music control does not break the rest of the UI.",
-        "Music can be toggled on/off during the experience."
+        "The reported output includes the failing deployment step/stage and the full error message.",
+        "No code/content/config changes are made while collecting/reporting the failure details."
       ]
     }
   ],
   "constraints": [
-    "Use English for all user-facing text.",
-    "Frontend must be React + TypeScript with Tailwind and existing shadcn/ui components composed (do not edit read-only UI component sources under frontend/src/components/ui).",
-    "Do not edit files listed in frontend.immutablePaths (e.g., useActor/useInternetIdentity/main.tsx).",
-    "Backend must remain a single Motoko actor in backend/main.mo; do not introduce additional backend services."
+    "Do not modify source code, static assets, canister logic, or user-facing content.",
+    "Keep the exact same configuration as the current app.",
+    "Backend must remain single-actor (no new canisters/services)."
   ],
   "nonGoals": [
-    "Do not implement third-party authentication providers (only Internet Identity is available; not required for this request).",
-    "Do not add real-time features (no WebSockets/live updates).",
-    "Do not add external databases or external storage services.",
-    "Do not build a multi-page URL router unless necessary; keep navigation simple and app-internal."
+    "Adding new features or changing UI/UX.",
+    "Refactoring code, updating dependencies, or changing build configuration beyond what is strictly required to redeploy.",
+    "Data/schema migrations."
   ],
   "imageRequirements": {
     "required": [],

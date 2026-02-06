@@ -31,7 +31,7 @@ export const idlService = IDL.Service({
   'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
   'getAllSubmissions' : IDL.Func(
       [],
-      [IDL.Vec(IDL.Tuple(IDL.Principal, Submission))],
+      [IDL.Vec(IDL.Tuple(IDL.Text, Submission))],
       ['query'],
     ),
   'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
@@ -73,7 +73,7 @@ export const idlFactory = ({ IDL }) => {
     'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
     'getAllSubmissions' : IDL.Func(
         [],
-        [IDL.Vec(IDL.Tuple(IDL.Principal, Submission))],
+        [IDL.Vec(IDL.Tuple(IDL.Text, Submission))],
         ['query'],
       ),
     'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),

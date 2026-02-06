@@ -50,7 +50,7 @@ function App() {
   return (
     <div className="min-h-screen rose-gradient relative overflow-x-hidden">
       <RosePetalsOverlay />
-      <MusicToggle />
+      <MusicToggle enabled={flowState === 'reveal'} autoStart={flowState === 'reveal'} />
       
       <main className="relative z-10">
         {flowState === 'lock' && (
@@ -75,6 +75,9 @@ function App() {
       <footer className="relative z-10 py-6 text-center text-sm text-muted-foreground/80">
         <p className="flex items-center justify-center gap-2 flex-wrap px-4">
           Unlocked with love, only for Vedu 🌹
+        </p>
+        <p className="flex items-center justify-center gap-2 flex-wrap px-4 mt-2">
+          With all my love, yours forever — Yash ❤️
         </p>
         <p className="flex items-center justify-center gap-2 flex-wrap px-4 mt-2 text-xs">
           © 2026. Built with <span className="text-rose-500 animate-pulse-heart">💖</span> using{' '}

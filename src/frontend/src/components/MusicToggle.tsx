@@ -1,13 +1,19 @@
 import { useState, useRef, useEffect } from 'react';
-import { Music, Volume2, VolumeX } from 'lucide-react';
+import { Volume2, VolumeX } from 'lucide-react';
 
-export function MusicToggle() {
+interface MusicToggleProps {
+  enabled?: boolean;
+  autoStart?: boolean;
+}
+
+export function MusicToggle({ enabled = true, autoStart = false }: MusicToggleProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isAvailable, setIsAvailable] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const hasAutoStartedRef = useRef(false);
 
   useEffect(() => {
-    audioRef.current = new Audio('/assets/romantic-music.mp3');
+    audioRef.current = new Audio('/assets/Gilehriyaan-Ringtone.mp3');
     audioRef.current.loop = true;
     audioRef.current.volume = 0.3;
 
@@ -23,8 +29,31 @@ export function MusicToggle() {
     };
   }, []);
 
+  // Auto-start music when enabled and autoStart is true
+  useEffect(() => {
+    if (enabled && autoStart && !hasAutoStartedRef.current && audioRef.current && isAvailable) {
+      hasAutoStartedRef.current = true;
+      audioRef.current.play()
+        .then(() => {
+          setIsPlaying(true);
+        })
+        .catch((error) => {
+          console.error('Auto-play failed:', error);
+          // Auto-play might be blocked by browser, user can manually start
+        });
+    }
+  }, [enabled, autoStart, isAvailable]);
+
+  // Stop music when disabled
+  useEffect(() => {
+    if (!enabled && audioRef.current && isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    }
+  }, [enabled, isPlaying]);
+
   const toggleMusic = async () => {
-    if (!audioRef.current || !isAvailable) return;
+    if (!audioRef.current || !isAvailable || !enabled) return;
 
     try {
       if (isPlaying) {
@@ -40,7 +69,7 @@ export function MusicToggle() {
     }
   };
 
-  if (!isAvailable) {
+  if (!isAvailable || !enabled) {
     return null;
   }
 

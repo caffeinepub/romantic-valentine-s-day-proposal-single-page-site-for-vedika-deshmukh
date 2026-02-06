@@ -28,7 +28,7 @@ export enum UserRole {
 }
 export interface backendInterface {
     assignCallerUserRole(user: Principal, role: UserRole): Promise<void>;
-    getAllSubmissions(): Promise<Array<[Principal, Submission]>>;
+    getAllSubmissions(): Promise<Array<[string, Submission]>>;
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
     getSubmissionSummary(): Promise<Summary>;

@@ -4,14 +4,18 @@ import { Card } from '@/components/ui/card';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
 } from '@/components/ui/dialog';
 import { Heart } from 'lucide-react';
+import { RoseBloomOverlay } from './RoseBloomOverlay';
 
 export function RoseDayRevealPage() {
   const [showDialog, setShowDialog] = useState(false);
+  const [animationRunKey, setAnimationRunKey] = useState(0);
+
+  const handleButtonClick = () => {
+    setAnimationRunKey((prev) => prev + 1);
+    setShowDialog(true);
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 py-12">
@@ -50,7 +54,7 @@ export function RoseDayRevealPage() {
 
           <div className="pt-6">
             <Button
-              onClick={() => setShowDialog(true)}
+              onClick={handleButtonClick}
               size="lg"
               className="w-full md:w-auto text-lg px-12 py-6 bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white shadow-rose-glow hover:shadow-rose-glow-lg transition-all duration-300 hover:scale-105 active:scale-95"
             >
@@ -61,18 +65,8 @@ export function RoseDayRevealPage() {
       </Card>
 
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
-        <DialogContent className="max-w-md border-2 border-rose-200/50 bg-card/98 backdrop-blur-sm">
-          <DialogHeader className="space-y-4">
-            <div className="flex justify-center">
-              <Heart className="w-16 h-16 text-rose-500 fill-rose-500 animate-pulse-heart" />
-            </div>
-            <DialogTitle className="text-center text-2xl md:text-3xl font-display text-rose-600">
-              You're my forever rose ❤️
-            </DialogTitle>
-            <DialogDescription className="text-center text-lg text-foreground/80">
-              Always blooming in my heart 🌹
-            </DialogDescription>
-          </DialogHeader>
+        <DialogContent className="max-w-full max-h-full w-screen h-screen border-0 bg-transparent p-0 [&>button]:hidden">
+          <RoseBloomOverlay runKey={animationRunKey} />
         </DialogContent>
       </Dialog>
     </div>

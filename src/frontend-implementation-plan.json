@@ -1,221 +1,66 @@
 {
   "kind": "implementation_plan",
   "version": "1.0",
-  "title": "Rose Day 3-question unlock flow with reveal, admin submissions view, petals overlay, and optional music",
+  "title": "Fresh live redeploy playbook (no app changes)",
   "requirements": [
     {
       "id": "REQ-1",
-      "summary": "Replace the current Valentine/proposal multi-section home with a new standalone, mobile-first Rose Day lock → 3 questions → reveal flow, plus optional hidden admin view.",
+      "summary": "Redeploy to a fresh live instance while keeping the app identical (no code/assets/config/content changes).",
       "acceptanceCriteria": [
-        "On first load, the user sees the Rose Day lock screen (not the existing Valentine/proposal multi-section home).",
-        "The Rose Day flow is usable on mobile screens (e.g., 360px width) without horizontal scrolling.",
-        "All user-facing text is in English."
+        "A new live deployment is created (fresh instance) and is reachable via a live URL.",
+        "No source code files, assets, or configuration values are modified as part of this change.",
+        "The deployed app behavior and content match the prior live deployment (no functional or copy changes)."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/App.tsx",
-          "operation": "modify",
-          "description": "Replace the current home/photos/videos navigation and multi-section Valentine experience with a self-contained Rose Day flow state machine (LockScreen → QuestionsWizard → Reveal), and wire in a hidden admin view toggle based on URL (e.g., hash/query). Ensure layout is mobile-first and prevents horizontal overflow."
-        },
-        {
-          "path": "frontend/src/pages/RoseDayApp.tsx",
+          "path": "frontend/deployment/fresh-instance-redeploy.md",
           "operation": "create",
-          "description": "Create a standalone Rose Day experience container component that owns the app-internal flow state, transition wrappers, and shared UI chrome (e.g., petals overlay + optional music toggle)."
-        },
-        {
-          "path": "frontend/src/utils/roseDayAdminToggle.ts",
-          "operation": "create",
-          "description": "Add a small utility to detect the hidden admin view activation via URL (hash or query param) and to keep normal user flow unaffected unless explicitly opened."
+          "description": "Document the exact operational steps to redeploy the existing already-built frontend to a fresh live instance without modifying any application source, static assets, or configuration values; include verification steps to confirm the deployed UI/content matches the previous live instance byte-for-byte where applicable."
         }
       ]
     },
     {
       "id": "REQ-2",
-      "summary": "Implement the lock-screen style opening view with exact text and CTA that transitions into Question 1 with a smooth animation and accessible button behavior.",
+      "summary": "If deployment fails after a successful build, retry deployment using the same build artifacts (no rebuild, no app changes).",
       "acceptanceCriteria": [
-        "The opening screen text matches exactly (including emoji).",
-        "Tapping/clicking the CTA transitions to Question 1 with a smooth animation/transition.",
-        "The CTA is clearly tappable and accessible (button element, visible focus state)."
+        "On deployment failure, the system performs at least one retry using the same build artifacts (no rebuild).",
+        "The retry does not introduce any code/config/content changes."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/rose-day/RoseDayLockScreen.tsx",
+          "path": "frontend/deployment/deploy-retry-policy.md",
           "operation": "create",
-          "description": "Create the lock-screen style view rendering the exact text “Only someone special can unlock this Rose Day surprise 🌹” and a primary CTA button labeled exactly “Unlock My Rose Day Gift ❤️”. Use shadcn/ui Button (and optionally Card) for accessible styling. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/RoseDayApp.tsx",
-          "operation": "modify",
-          "description": "Wire the lock-screen component as the initial screen and implement a smooth animated transition into the Questions wizard on CTA click (e.g., fade/slide using existing Tailwind animation utilities and minimal extra CSS)."
+          "description": "Define the deployment retry procedure that explicitly reuses the current build artifacts (no rebuild) and prohibits any changes to frontend code, assets, or configuration values; include guidance on how to confirm the same artifact bundle is being redeployed."
         }
       ]
     },
     {
       "id": "REQ-3",
-      "summary": "Implement a strict 3-step wizard that shows one question at a time with a typing input, requiring a non-empty answer to proceed in order.",
+      "summary": "If retry fails with the same error, redeploy the last known successful build artifacts exactly as-is (no rebuild, no app changes).",
       "acceptanceCriteria": [
-        "Question 1 is exactly: “When was our first kiss?”",
-        "Question 2 is exactly: “When did you give me my first chocolate?”",
-        "Question 3 is exactly: “How many roses have I given you till now?”",
-        "The “Next”/continue action is disabled or blocked until the input contains at least 1 non-whitespace character.",
-        "Navigation proceeds strictly in order: Q1 → Q2 → Q3 → Reveal (no skipping)."
+        "If the retry fails with the same error, the system attempts a fallback redeploy using the last known successful artifacts without rebuilding.",
+        "Fallback redeploy does not modify any source code, assets, or configuration."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/components/rose-day/RoseDayQuestionsWizard.tsx",
+          "path": "frontend/deployment/fallback-last-known-good.md",
           "operation": "create",
-          "description": "Create a 3-step wizard component that displays exactly one question at a time, uses a typing Input, and prevents progression unless the current answer has at least one non-whitespace character. Use shadcn/ui Input and Button to ensure accessible controls. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/RoseDayApp.tsx",
-          "operation": "modify",
-          "description": "Wire the QuestionsWizard into the Rose Day flow; ensure step order is enforced by parent-owned state (no direct jumps) and ensure mobile-first spacing/typography."
+          "description": "Document the fallback redeploy procedure that uses the last known successful frontend build artifacts exactly as-is (no rebuild) and includes checks to ensure the artifact set is unchanged before redeploying."
         }
       ]
     },
     {
       "id": "REQ-4",
-      "summary": "Persist the three typed answers, submit them to the backend as a single submission after Q3, and only transition to the reveal page on successful submission with retry on failure.",
+      "summary": "If deployment still fails after retry and fallback, capture and report failure details without any code changes.",
       "acceptanceCriteria": [
-        "On completing Q3, the frontend calls a backend method that stores Q1/Q2/Q3 answers together in one record.",
-        "If the backend call fails, the user remains on the last step and sees a clear, English error message with an option to retry submission.",
-        "After successful submission, the user is transitioned to the reveal page with a smooth animation."
+        "The reported output includes the failing deployment step/stage and the full error message.",
+        "No code/content/config changes are made while collecting/reporting the failure details."
       ],
       "file_operations": [
         {
-          "path": "frontend/src/hooks/useSubmitRoseDayAnswers.ts",
+          "path": "frontend/deployment/deploy-failure-reporting.md",
           "operation": "create",
-          "description": "Add a React hook that uses useActor() to call the backend capability submitAnswer(answer1, answer2, answer3), exposes loading/error state, and provides a retry-friendly API for the wizard to use."
-        },
-        {
-          "path": "frontend/src/components/rose-day/RoseDayQuestionsWizard.tsx",
-          "operation": "modify",
-          "description": "Persist answers across steps within the wizard (or via parent callbacks) and on Q3 completion call the submit hook to send all three answers together. On failure, keep the user on Q3 and show a clear English error message plus a retry action; on success, notify parent to transition to reveal with a smooth animation."
-        },
-        {
-          "path": "frontend/src/pages/RoseDayApp.tsx",
-          "operation": "modify",
-          "description": "Store the three typed answers in parent state for the duration of the flow and gate the transition from Q3 to Reveal on successful backend submission; implement smooth transition for success path."
-        }
-      ]
-    },
-    {
-      "id": "REQ-6",
-      "summary": "Add a discoverable-but-hidden admin/owner view that fetches and shows a verbatim submissions list (Q1/Q2/Q3 answers) from the backend without appearing in the normal flow.",
-      "acceptanceCriteria": [
-        "There is a discoverable-but-hidden way to open the admin view (e.g., a URL toggle like a query param or hash).",
-        "The admin view displays a list of submissions with the three answers shown verbatim (no masking or truncation by default).",
-        "The admin view is not shown during the normal lock → questions → reveal experience unless explicitly opened."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/rose-day/RoseDayAdminView.tsx",
-          "operation": "create",
-          "description": "Create an admin/owner-only submissions viewer that fetches getAllSubmissions() from the backend and renders each submission’s three answers verbatim. Use shadcn/ui components (e.g., Card, ScrollArea, Separator) for readable layout. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/hooks/useRoseDaySubmissions.ts",
-          "operation": "create",
-          "description": "Add a React Query hook that uses useActor() to fetch getAllSubmissions() and returns loading/error states for the admin view."
-        },
-        {
-          "path": "frontend/src/pages/RoseDayApp.tsx",
-          "operation": "modify",
-          "description": "Wire a hidden admin activation mechanism (via the URL toggle utility) so the admin view is only shown when explicitly requested; otherwise keep the normal lock → questions → reveal experience unchanged."
-        },
-        {
-          "path": "frontend/src/utils/roseDayAdminToggle.ts",
-          "operation": "modify",
-          "description": "Implement/extend the URL toggle parsing to support opening the admin view reliably (e.g., hash and/or query param) and avoid accidental activation during normal use."
-        }
-      ]
-    },
-    {
-      "id": "REQ-7",
-      "summary": "Implement the Rose Day reveal page with the exact provided romantic message, premium-feel typography, a soft reveal animation, and the exact footer line.",
-      "acceptanceCriteria": [
-        "The reveal page displays the message text exactly as provided (including punctuation, line breaks/formatting as closely as feasible, and emojis).",
-        "The footer line matches exactly (including emoji).",
-        "The reveal appears with a soft animation/transition (no abrupt cut)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/rose-day/RoseDayRevealPage.tsx",
-          "operation": "create",
-          "description": "Create the reveal page component that renders the provided romantic message text exactly (preserving line breaks as closely as feasible) and includes the footer line exactly: “Unlocked with love, only for Vedu 🌹”. Use shadcn/ui typography primitives where appropriate (e.g., Card) and Tailwind for premium-feel styling. Verify the component's usage instructions before implementing."
-        },
-        {
-          "path": "frontend/src/pages/RoseDayApp.tsx",
-          "operation": "modify",
-          "description": "Wire reveal page rendering after successful submission only, and apply a soft transition animation (fade/slide) when entering the reveal screen."
-        }
-      ]
-    },
-    {
-      "id": "REQ-8",
-      "summary": "Add the reveal-page button with exact label that opens a dismissible soft popup/dialog with exact text.",
-      "acceptanceCriteria": [
-        "The reveal button label matches exactly (including emoji).",
-        "Clicking/tapping opens a modal/popup with the exact popup text (including emoji).",
-        "The popup can be dismissed via an explicit close action and by typical dialog interactions (e.g., close button / escape)."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/rose-day/RoseDayRevealPage.tsx",
-          "operation": "modify",
-          "description": "Add a button labeled exactly “This rose is only for you, Vedu 🌹” and open a shadcn/ui Dialog modal that displays exactly “You’re my forever rose ❤️”. Ensure close button and standard dialog dismissal behaviors work. Verify the component's usage instructions before implementing."
-        }
-      ]
-    },
-    {
-      "id": "REQ-9",
-      "summary": "Apply rose-themed visuals (soft red/pink/white), smooth transitions, and an elegant floating rose petals overlay that doesn't block interactions.",
-      "acceptanceCriteria": [
-        "A rose-petal floating animation is visible on the main user flow screens (lock, questions, reveal) and does not block interactions (pointer-events disabled).",
-        "Colors and styling match a soft red/pink/white premium Valentine-style feel (no harsh/neon palette).",
-        "Transitions between lock/questions/reveal are smooth (e.g., fade/slide), consistent, and performant on mobile."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/rose-day/RosePetalsOverlay.tsx",
-          "operation": "create",
-          "description": "Create a lightweight floating rose petals overlay component (e.g., using 🌹/petal-like characters or simple elements) rendered as a fixed inset layer with pointer-events-none so it never blocks interactions; tune density/speed to feel elegant and not distracting."
-        },
-        {
-          "path": "frontend/src/pages/RoseDayApp.tsx",
-          "operation": "modify",
-          "description": "Wire the RosePetalsOverlay so it appears across the lock, questions, and reveal screens (main user flow), and ensure z-index layering keeps content interactive."
-        },
-        {
-          "path": "frontend/src/index.css",
-          "operation": "modify",
-          "description": "Add/adjust minimal global animation utilities for the rose petals overlay and screen transitions (reusing existing palette and animation patterns), ensuring performance on mobile and avoiding horizontal overflow."
-        },
-        {
-          "path": "frontend/tailwind.config.js",
-          "operation": "modify",
-          "description": "If needed for the rose-themed premium feel, extend Tailwind theme tokens (e.g., subtle shadows/typography) while keeping the palette soft red/pink/white and consistent with existing OKLCH variables."
-        }
-      ]
-    },
-    {
-      "id": "REQ-10",
-      "summary": "Provide optional romantic background music via a user-initiated toggle (no autoplay) and keep the UI functional if the audio asset is missing.",
-      "acceptanceCriteria": [
-        "Music playback starts only after a user gesture (tap/click).",
-        "If the configured audio file is not available, the music control does not break the rest of the UI.",
-        "Music can be toggled on/off during the experience."
-      ],
-      "file_operations": [
-        {
-          "path": "frontend/src/components/MusicToggle.tsx",
-          "operation": "modify",
-          "description": "Ensure MusicToggle remains compatible with the new Rose Day flow styling (positioning/z-index) and continues to meet the no-autoplay and missing-asset graceful handling requirements; keep it fully user-gesture initiated."
-        },
-        {
-          "path": "frontend/src/pages/RoseDayApp.tsx",
-          "operation": "modify",
-          "description": "Wire the existing MusicToggle into the Rose Day experience so users can toggle music during lock/questions/reveal without disrupting transitions."
+          "description": "Specify what deployment failure details must be captured (full error message, failing step/stage, timestamps) and how to report them, explicitly ensuring no frontend code/assets/config/content changes are made as part of troubleshooting."
         }
       ]
     }

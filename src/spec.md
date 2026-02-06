@@ -1,16 +1,12 @@
 # Specification
 
 ## Summary
-**Goal:** Replace the current frontend with a standalone, mobile-first Rose Day “unlock” experience: lock-screen intro → 3 typed questions → Rose Day reveal, plus a hidden owner/admin view that can review submitted answers stored in the backend.
+**Goal:** Redeploy the existing application to a fresh live instance without any code, asset, configuration, or content changes.
 
 **Planned changes:**
-- Build a new lock-screen opening view with the exact intro text and CTA that transitions into the question flow.
-- Implement a 3-step question wizard (one question at a time) requiring a non-empty typed answer before moving forward, in strict order (Q1 → Q2 → Q3).
-- Persist the three typed answers and submit them to the backend as a single record on completion of Question 3; show a retryable error if submission fails.
-- Add backend (single Motoko actor) storage + APIs to create and list submissions (q1/q2/q3 + created-at), persisted via stable storage.
-- Add a hidden-but-discoverable admin/owner frontend view (e.g., URL hash/query toggle) to fetch and display the full submissions list with answers shown verbatim.
-- Implement the Rose Day reveal page shown after successful submission, with the provided romantic message and exact footer line, plus a reveal button that opens a popup with the exact text.
-- Apply rose-themed styling (soft red/pink/white), smooth transitions, and an elegant floating rose-petals animation overlay that does not block interaction.
-- Add optional romantic background music with a user-initiated on/off toggle (no autoplay) and graceful behavior if the audio asset is missing.
+- Create a new live deployment (fresh instance) using the exact same build, configuration, and content as the current app.
+- If deployment fails after a successful build, retry deployment using the current build artifacts without rebuilding.
+- If the retry fails with the same error, redeploy the last known successful build artifacts exactly as-is (no rebuild).
+- If deployment still fails, capture and report the failure details (error message and the step where it occurred) without making any code changes.
 
-**User-visible outcome:** On mobile, users see a Rose Day lock screen and can unlock a romantic reveal by typing answers to 3 questions; after submission, they see the reveal message and interactive popup. The creator can open a hidden admin view to review exactly what answers were submitted.
+**User-visible outcome:** The app is reachable via a new live URL and behaves identically to the prior live deployment (no functional or copy changes).

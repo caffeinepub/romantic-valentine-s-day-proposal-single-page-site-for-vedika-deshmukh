@@ -1,12 +1,14 @@
+import List "mo:core/List";
+
 import Map "mo:core/Map";
 import Principal "mo:core/Principal";
-import List "mo:core/List";
 import Runtime "mo:core/Runtime";
 import MixinAuthorization "authorization/MixinAuthorization";
 import AccessControl "authorization/access-control";
 
+// Apply migration with new anonymous support and unique id mapping
+
 actor {
-  // Types
   type Submission = {
     answer1 : Text;
     answer2 : Text;
@@ -24,26 +26,28 @@ actor {
     name : Text;
   };
 
-  // Persistent Store
-  type Store = Map.Map<Principal, Submission>;
+  type Store = Map.Map<Text, Submission>;
 
-  // Access Control State
   let accessControlState = AccessControl.initState();
   include MixinAuthorization(accessControlState);
 
-  // Persistent store instance for submissions
-  let store = Map.empty<Principal, Submission>();
-
-  // Store for user profiles
+  let store = Map.empty<Text, Submission>();
   let userProfiles = Map.empty<Principal, UserProfile>();
+  var nextAnonymousId = 1;
 
-  // Submit an answer
   public shared ({ caller }) func submitAnswer(answer1 : Text, answer2 : Text, answer3 : Text) : async () {
-    if (not AccessControl.hasPermission(accessControlState, caller, #user)) {
-      Runtime.trap("Unauthorized: Only users can submit answers");
+    // Public endpoint - no authorization check required
+    // Anonymous users get unique IDs, authenticated users use their Principal
+    if (caller.isAnonymous()) {
+      let submission : Submission = { answer1; answer2; answer3 };
+      let submissionId = "anonymous_" # nextAnonymousId.toText();
+      store.add(submissionId, submission);
+      nextAnonymousId += 1;
+    } else {
+      let submission : Submission = { answer1; answer2; answer3 };
+      let submissionId = caller.toText();
+      store.add(submissionId, submission);
     };
-    let submission : Submission = { answer1; answer2; answer3 };
-    store.add(caller, submission);
   };
 
   public query ({ caller }) func getCallerUserProfile() : async ?UserProfile {
@@ -67,8 +71,7 @@ actor {
     userProfiles.add(caller, profile);
   };
 
-  // Only admin can review all submissions and summaries
-  public query ({ caller }) func getAllSubmissions() : async [(Principal, Submission)] {
+  public query ({ caller }) func getAllSubmissions() : async [(Text, Submission)] {
     if (not AccessControl.isAdmin(accessControlState, caller)) {
       Runtime.trap("Unauthorized: Only admin can access all answers");
     };
@@ -97,3 +100,4 @@ actor {
     };
   };
 };
+

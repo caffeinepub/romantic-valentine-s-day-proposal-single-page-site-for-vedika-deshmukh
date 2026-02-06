@@ -1,181 +1,58 @@
 {
   "kind": "coverage_report",
   "version": "1.0",
-  "generatedAt": "2026-02-06T08:10:55.629Z",
+  "generatedAt": "2026-02-06T15:58:37.596Z",
   "sources": {
     "buildRequest": true,
     "implementationPlan": true
   },
   "requirements": {
-    "total": 10,
-    "implemented": 8,
+    "total": 4,
+    "implemented": 0,
     "items": [
       {
         "id": "REQ-1",
-        "summary": "Replace the current frontend experience with a new, standalone, mobile-first Rose Day interactive website flow consisting of: (1) Lock screen intro, (2) 3-step typed-question unlock flow, (3) Rose Day reveal page, plus an optional hidden admin/owner view.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/App.tsx",
-          "frontend/src/pages/RoseDayApp.tsx",
-          "frontend/src/utils/roseDayAdminToggle.ts"
-        ],
-        "matchedFiles": [
-          "frontend/src/App.tsx"
-        ]
-      },
-      {
-        "id": "REQ-10",
-        "summary": "Include optional romantic background music controlled by a user-initiated toggle (no autoplay) and ensure the site remains fully functional if the audio asset is missing.",
+        "summary": "Deploy the application to a fresh live instance while keeping the exact same configuration and content (no changes to source code, assets, canister logic, or user-facing text).",
         "status": "missing",
         "plannedFiles": [
-          "frontend/src/components/MusicToggle.tsx",
-          "frontend/src/pages/RoseDayApp.tsx"
+          "frontend/deployment/fresh-instance-redeploy.md"
         ],
         "matchedFiles": []
       },
       {
         "id": "REQ-2",
-        "summary": "Implement the Opening Screen as a lock-screen style view with the exact text “Only someone special can unlock this Rose Day surprise 🌹” and a primary CTA button labeled exactly “Unlock My Rose Day Gift ❤️” that transitions into the question flow.",
-        "status": "implemented",
+        "summary": "If the deployment fails after a successful build, retry deployment using the current build artifacts without rebuilding and without changing any app logic/content.",
+        "status": "missing",
         "plannedFiles": [
-          "frontend/src/components/rose-day/RoseDayLockScreen.tsx",
-          "frontend/src/pages/RoseDayApp.tsx"
+          "frontend/deployment/deploy-retry-policy.md"
         ],
-        "matchedFiles": [
-          "frontend/src/components/rose-day/RoseDayLockScreen.tsx"
-        ]
-      },
-      {
-        "id": "REQ-3",
-        "summary": "Implement the mandatory Question Section as a 3-step wizard showing one question at a time with a typing input field, requiring a non-empty typed answer before the user can proceed to the next question.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/rose-day/RoseDayQuestionsWizard.tsx",
-          "frontend/src/pages/RoseDayApp.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/rose-day/RoseDayQuestionsWizard.tsx"
-        ]
-      },
-      {
-        "id": "REQ-4",
-        "summary": "Persist the three typed answers and submit them to the backend as a single submission when the user completes Question 3, then transition to the Rose Day reveal page only after a successful submission.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/hooks/useSubmitRoseDayAnswers.ts",
-          "frontend/src/components/rose-day/RoseDayQuestionsWizard.tsx",
-          "frontend/src/pages/RoseDayApp.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/hooks/useSubmitRoseDayAnswers.ts",
-          "frontend/src/components/rose-day/RoseDayQuestionsWizard.tsx"
-        ]
-      },
-      {
-        "id": "REQ-5",
-        "summary": "Add Motoko backend storage and APIs to record and retrieve submissions containing all three answers exactly as typed, so the creator can review what was entered later.",
-        "status": "unknown",
-        "plannedFiles": [],
         "matchedFiles": []
       },
       {
-        "id": "REQ-6",
-        "summary": "Implement a hidden owner/admin section in the frontend that allows the creator to view a submissions list (including the exact answers typed for Q1/Q2/Q3) fetched from the backend.",
-        "status": "implemented",
+        "id": "REQ-3",
+        "summary": "If retrying deployment fails with the same error, redeploy the last known successful build artifacts exactly as-is (no rebuild and no code changes).",
+        "status": "missing",
         "plannedFiles": [
-          "frontend/src/components/rose-day/RoseDayAdminView.tsx",
-          "frontend/src/hooks/useRoseDaySubmissions.ts",
-          "frontend/src/pages/RoseDayApp.tsx",
-          "frontend/src/utils/roseDayAdminToggle.ts"
+          "frontend/deployment/fallback-last-known-good.md"
         ],
-        "matchedFiles": [
-          "frontend/src/components/rose-day/RoseDayAdminView.tsx",
-          "frontend/src/hooks/useRoseDaySubmissions.ts"
-        ]
+        "matchedFiles": []
       },
       {
-        "id": "REQ-7",
-        "summary": "Implement the Rose Day reveal page shown after all 3 questions are completed, including the provided romantic message in a stylish, premium-feel typography and a footer line exactly: “Unlocked with love, only for Vedu 🌹”.",
-        "status": "implemented",
+        "id": "REQ-4",
+        "summary": "If deployment still fails after retry and fallback redeploy attempts, capture and report the deployment failure details (error message and the step where it occurred) without making any code changes.",
+        "status": "missing",
         "plannedFiles": [
-          "frontend/src/components/rose-day/RoseDayRevealPage.tsx",
-          "frontend/src/pages/RoseDayApp.tsx"
+          "frontend/deployment/deploy-failure-reporting.md"
         ],
-        "matchedFiles": [
-          "frontend/src/components/rose-day/RoseDayRevealPage.tsx"
-        ]
-      },
-      {
-        "id": "REQ-8",
-        "summary": "Add the reveal-page button labeled exactly “This rose is only for you, Vedu 🌹”; when clicked, show a soft popup/dialog with the exact text “You’re my forever rose ❤️”.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/rose-day/RoseDayRevealPage.tsx"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/rose-day/RoseDayRevealPage.tsx"
-        ]
-      },
-      {
-        "id": "REQ-9",
-        "summary": "Apply a rose-themed visual design using soft red, pink, and white, with smooth transitions and a floating rose petals animation overlay that feels elegant and not distracting.",
-        "status": "implemented",
-        "plannedFiles": [
-          "frontend/src/components/rose-day/RosePetalsOverlay.tsx",
-          "frontend/src/pages/RoseDayApp.tsx",
-          "frontend/src/index.css",
-          "frontend/tailwind.config.js"
-        ],
-        "matchedFiles": [
-          "frontend/src/components/rose-day/RosePetalsOverlay.tsx",
-          "frontend/src/index.css",
-          "frontend/tailwind.config.js"
-        ]
+        "matchedFiles": []
       }
     ]
   },
   "changedFiles": [
-    "backend/authorization/MixinAuthorization.mo",
-    "backend/authorization/access-control.mo",
     "backend/main.mo",
     "build-request.json",
-    "caffeine.lock.json",
     "feature_evidence.json",
-    "frontend-file-summaries.txt",
     "frontend-implementation-plan.json",
-    "frontend/src/App.tsx",
-    "frontend/src/backend.d.ts",
-    "frontend/src/backend.ts",
-    "frontend/src/components/FinalMessageSection.tsx",
-    "frontend/src/components/FloatingHeartsOverlay.tsx",
-    "frontend/src/components/HeroVideoSection.tsx",
-    "frontend/src/components/OpeningSection.tsx",
-    "frontend/src/components/OurBestMemoriesSection.tsx",
-    "frontend/src/components/OurMemoriesBackgroundSection.tsx",
-    "frontend/src/components/ProposalSection.tsx",
-    "frontend/src/components/SectionShell.tsx",
-    "frontend/src/components/SoftHeartsOverlay.tsx",
-    "frontend/src/components/SorrySection.tsx",
-    "frontend/src/components/UnlockMomentsPuzzleSection.tsx",
-    "frontend/src/components/VideosSection.tsx",
-    "frontend/src/components/rose-day/RoseDayAdminView.tsx",
-    "frontend/src/components/rose-day/RoseDayLockScreen.tsx",
-    "frontend/src/components/rose-day/RoseDayQuestionsWizard.tsx",
-    "frontend/src/components/rose-day/RoseDayRevealPage.tsx",
-    "frontend/src/components/rose-day/RosePetalsOverlay.tsx",
-    "frontend/src/declarations/backend.did.d.ts",
-    "frontend/src/declarations/backend.did.js",
-    "frontend/src/hooks/useActor.ts",
-    "frontend/src/hooks/useEvasiveNoButton.ts",
-    "frontend/src/hooks/useRevealOnScroll.ts",
-    "frontend/src/hooks/useRoseDaySubmissions.ts",
-    "frontend/src/hooks/useSubmitRoseDayAnswers.ts",
-    "frontend/src/index.css",
-    "frontend/src/pages/GalleryPage.tsx",
-    "frontend/src/pages/PhotosPage.tsx",
-    "frontend/src/pages/VideosPage.tsx",
-    "frontend/src/utils/urlParams.ts",
-    "frontend/tailwind.config.js",
     "project_state.json",
     "scratch/component-selection.json",
     "spec.md",
