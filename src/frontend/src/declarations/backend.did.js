@@ -8,10 +8,86 @@
 
 import { IDL } from '@icp-sdk/core/candid';
 
-export const idlService = IDL.Service({});
+export const UserRole = IDL.Variant({
+  'admin' : IDL.Null,
+  'user' : IDL.Null,
+  'guest' : IDL.Null,
+});
+export const Submission = IDL.Record({
+  'answer1' : IDL.Text,
+  'answer2' : IDL.Text,
+  'answer3' : IDL.Text,
+});
+export const UserProfile = IDL.Record({ 'name' : IDL.Text });
+export const Summary = IDL.Record({
+  'count' : IDL.Nat,
+  'answers1' : IDL.Vec(IDL.Text),
+  'answers2' : IDL.Vec(IDL.Text),
+  'answers3' : IDL.Vec(IDL.Text),
+});
+
+export const idlService = IDL.Service({
+  '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+  'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+  'getAllSubmissions' : IDL.Func(
+      [],
+      [IDL.Vec(IDL.Tuple(IDL.Principal, Submission))],
+      ['query'],
+    ),
+  'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+  'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+  'getSubmissionSummary' : IDL.Func([], [Summary], ['query']),
+  'getUserProfile' : IDL.Func(
+      [IDL.Principal],
+      [IDL.Opt(UserProfile)],
+      ['query'],
+    ),
+  'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+  'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+  'submitAnswer' : IDL.Func([IDL.Text, IDL.Text, IDL.Text], [], []),
+});
 
 export const idlInitArgs = [];
 
-export const idlFactory = ({ IDL }) => { return IDL.Service({}); };
+export const idlFactory = ({ IDL }) => {
+  const UserRole = IDL.Variant({
+    'admin' : IDL.Null,
+    'user' : IDL.Null,
+    'guest' : IDL.Null,
+  });
+  const Submission = IDL.Record({
+    'answer1' : IDL.Text,
+    'answer2' : IDL.Text,
+    'answer3' : IDL.Text,
+  });
+  const UserProfile = IDL.Record({ 'name' : IDL.Text });
+  const Summary = IDL.Record({
+    'count' : IDL.Nat,
+    'answers1' : IDL.Vec(IDL.Text),
+    'answers2' : IDL.Vec(IDL.Text),
+    'answers3' : IDL.Vec(IDL.Text),
+  });
+  
+  return IDL.Service({
+    '_initializeAccessControlWithSecret' : IDL.Func([IDL.Text], [], []),
+    'assignCallerUserRole' : IDL.Func([IDL.Principal, UserRole], [], []),
+    'getAllSubmissions' : IDL.Func(
+        [],
+        [IDL.Vec(IDL.Tuple(IDL.Principal, Submission))],
+        ['query'],
+      ),
+    'getCallerUserProfile' : IDL.Func([], [IDL.Opt(UserProfile)], ['query']),
+    'getCallerUserRole' : IDL.Func([], [UserRole], ['query']),
+    'getSubmissionSummary' : IDL.Func([], [Summary], ['query']),
+    'getUserProfile' : IDL.Func(
+        [IDL.Principal],
+        [IDL.Opt(UserProfile)],
+        ['query'],
+      ),
+    'isCallerAdmin' : IDL.Func([], [IDL.Bool], ['query']),
+    'saveCallerUserProfile' : IDL.Func([UserProfile], [], []),
+    'submitAnswer' : IDL.Func([IDL.Text, IDL.Text, IDL.Text], [], []),
+  });
+};
 
 export const init = ({ IDL }) => { return []; };

@@ -1,131 +1,205 @@
 {
   "kind": "build_request",
-  "title": "Add romantic puzzle section to unlock the two Moments cards",
+  "title": "Romantic Rose Day unlock website with 3 questions, hidden admin answers, and rose-petal animations",
   "priority": "normal",
   "requirements": [
     {
-      "id": "REQ-19",
-      "text": "Add a new Home-page section placed directly above the existing “Our Moments Together 💖” section with the heading text exactly: “Unlock Our Moments 💖”. This new section must not modify any existing sections’ layout, text, colors, gradients, animations, or order other than inserting this new section in-between the existing sections.",
+      "id": "REQ-1",
+      "text": "Replace the current frontend experience with a new, standalone, mobile-first Rose Day interactive website flow consisting of: (1) Lock screen intro, (2) 3-step typed-question unlock flow, (3) Rose Day reveal page, plus an optional hidden admin/owner view.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-6"
+          "msg-1",
+          "msg-2"
         ],
         "quotes": [
-          "Add a section above “Our Moments Together” called: “Unlock Our Moments 💖”",
-          "Do NOT change any existing sections, layout, text, or colors."
+          "Create a romantic and flirty Rose Day interactive website that opens only after answering 3 questions.",
+          "Create new app"
         ]
       },
       "acceptanceCriteria": [
-        "On the Home page, a new section titled “Unlock Our Moments 💖” appears immediately above the “Our Moments Together 💖” section.",
-        "No existing section text, colors, gradients, or layouts are changed (other than shifting down due to the inserted section)."
+        "On first load, the user sees the Rose Day lock screen (not the existing Valentine/proposal multi-section home).",
+        "The Rose Day flow is usable on mobile screens (e.g., 360px width) without horizontal scrolling.",
+        "All user-facing text is in English."
       ]
     },
     {
-      "id": "REQ-20",
-      "text": "Implement a simple, cute, touch-friendly photo puzzle inside the new “Unlock Our Moments 💖” section using ONLY the uploaded image file `Snapchat-1757390130.jpg` as a static asset (no generated/random images). Split the photo into 4–6 easy pieces (default to an easy configuration) and make the interaction smooth and mobile-optimized.",
+      "id": "REQ-2",
+      "text": "Implement the Opening Screen as a lock-screen style view with the exact text “Only someone special can unlock this Rose Day surprise 🌹” and a primary CTA button labeled exactly “Unlock My Rose Day Gift ❤️” that transitions into the question flow.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-6"
+          "msg-2"
         ],
         "quotes": [
-          "Create a simple, cute photo puzzle using ONE uploaded photo.",
-          "Split the photo into 4–6 easy puzzle pieces.",
-          "The puzzle should be smooth, touch-friendly, and mobile-optimized.",
-          "Use ONLY the uploaded photo for the puzzle",
-          "The user has uploaded 1 image(s): Snapchat-1757390130.jpg."
+          "Opening Screen:\nShow a romantic lock screen with text:\n“Only someone special can unlock this Rose Day surprise 🌹”\nAdd a button: “Unlock My Rose Day Gift ❤️”"
         ]
       },
       "acceptanceCriteria": [
-        "The puzzle uses only `/assets/Snapchat-1757390130.jpg` (or equivalent static public asset path) and does not introduce any other puzzle imagery.",
-        "The puzzle has 4–6 pieces and is easy to solve (not difficult).",
-        "Puzzle interaction works on mobile touch (no reliance on desktop-only drag behavior)."
+        "The opening screen text matches exactly (including emoji).",
+        "Tapping/clicking the CTA transitions to Question 1 with a smooth animation/transition.",
+        "The CTA is clearly tappable and accessible (button element, visible focus state)."
       ]
     },
     {
-      "id": "REQ-21",
-      "text": "In the “Unlock Our Moments 💖” section, display the instruction text exactly: “Solve this little puzzle to unlock our memories 💕”.",
+      "id": "REQ-3",
+      "text": "Implement the mandatory Question Section as a 3-step wizard showing one question at a time with a typing input field, requiring a non-empty typed answer before the user can proceed to the next question.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-6"
+          "msg-2"
         ],
         "quotes": [
-          "Show text: “Solve this little puzzle to unlock our memories 💕”"
+          "Question Section (Mandatory – User must type answers):\nShow one question at a time with a typing input field.\n...\nEach question must require the user to type an answer before moving to the next question."
         ]
       },
       "acceptanceCriteria": [
-        "Before the puzzle is solved, the instruction text “Solve this little puzzle to unlock our memories 💕” is visible in the puzzle section."
+        "Question 1 is exactly: “When was our first kiss?”",
+        "Question 2 is exactly: “When did you give me my first chocolate?”",
+        "Question 3 is exactly: “How many roses have I given you till now?”",
+        "The “Next”/continue action is disabled or blocked until the input contains at least 1 non-whitespace character.",
+        "Navigation proceeds strictly in order: Q1 → Q2 → Q3 → Reveal (no skipping)."
       ]
     },
     {
-      "id": "REQ-22",
-      "text": "Gate the two existing cards in `frontend/src/components/VideosSection.tsx` (Card 1: “Our Best Moments 💕”, Card 2: “Memories That Mean Everything 💖”) behind the puzzle: initially both cards must be LOCKED 🔒 (visually blurred/disabled) and not clickable; after puzzle completion, both cards must unlock by removing the blur/disabled state and enabling clicking. After unlock, both cards must behave exactly as currently defined (same onClick navigation). Do not change the cards’ existing layout, styling, text, animations, gradients, or the surrounding “Our Moments Together 💖” section besides adding the locked/disabled overlay state and click blocking while locked.",
-      "target": "frontend",
+      "id": "REQ-4",
+      "text": "Persist the three typed answers and submit them to the backend as a single submission when the user completes Question 3, then transition to the Rose Day reveal page only after a successful submission.",
+      "target": "both",
       "source": {
         "messageIds": [
-          "msg-6"
+          "msg-2"
         ],
         "quotes": [
-          "Initially, Card 1 and Card 2 must be LOCKED 🔒",
-          "Cards should appear blurred or disabled",
-          "UNLOCK Card 1 and Card 2",
-          "Enable clicking on both cards",
-          "After Unlock: Card 1 and Card 2 should behave exactly as already defined.",
-          "No other changes anywhere else on the website."
+          "Answer Visibility (Very Important):\nStore and display all typed answers in a hidden owner/admin section or submission summary panel so that I (the creator) can see exactly what answers she typed."
         ]
       },
       "acceptanceCriteria": [
-        "On initial load, both cards under “Our Moments Together 💖” appear locked (blurred/disabled) and do not navigate when clicked/tapped.",
-        "After solving the puzzle, both cards become visually normal (no blur/disabled styling) and navigate exactly as before (Photos page for “Our Best Moments 💕”, Videos page for “Memories That Mean Everything 💖”).",
-        "Other than the locked/unlocked state behavior, the cards’ existing design (text, gradients, hover effects) remains unchanged."
+        "On completing Q3, the frontend calls a backend method that stores Q1/Q2/Q3 answers together in one record.",
+        "If the backend call fails, the user remains on the last step and sees a clear, English error message with an option to retry submission.",
+        "After successful submission, the user is transitioned to the reveal page with a smooth animation."
       ]
     },
     {
-      "id": "REQ-23",
-      "text": "When the puzzle is solved correctly, show the success message exactly: “You did it 🥰 Just like us, everything fits perfectly 💖” and play a soft heart animation in/over the puzzle section. The heart animation should feel romantic and subtle (not intense or distracting).",
-      "target": "frontend",
+      "id": "REQ-5",
+      "text": "Add Motoko backend storage and APIs to record and retrieve submissions containing all three answers exactly as typed, so the creator can review what was entered later.",
+      "target": "backend",
       "source": {
         "messageIds": [
-          "msg-6"
+          "msg-2"
         ],
         "quotes": [
-          "When the puzzle is solved correctly: • Show a sweet message: “You did it 🥰 Just like us, everything fits perfectly 💖” • Play soft heart animation"
+          "Store and display all typed answers in a hidden owner/admin section or submission summary panel so that I (the creator) can see exactly what answers she typed."
         ]
       },
       "acceptanceCriteria": [
-        "Upon puzzle completion, the success message “You did it 🥰 Just like us, everything fits perfectly 💖” is displayed.",
-        "A soft heart animation plays on completion and does not affect other site sections."
+        "Backend exposes an update method to create a submission containing q1, q2, q3 and a created-at timestamp.",
+        "Backend exposes a query method to list stored submissions (including the exact q1/q2/q3 text values).",
+        "Stored submissions persist across page refreshes and canister restarts/upgrades via stable storage.",
+        "No additional backend canisters/services are introduced (single-actor only)."
       ]
     },
     {
-      "id": "REQ-24",
-      "text": "Add the uploaded image `Snapchat-1757390130.jpg` to the frontend public static assets and reference it by its exact filename for the puzzle (no backend involvement).",
+      "id": "REQ-6",
+      "text": "Implement a hidden owner/admin section in the frontend that allows the creator to view a submissions list (including the exact answers typed for Q1/Q2/Q3) fetched from the backend.",
       "target": "frontend",
       "source": {
         "messageIds": [
-          "msg-6"
+          "msg-2"
         ],
         "quotes": [
-          "Use ONLY the uploaded photo for the puzzle",
-          "The user has uploaded 1 image(s): Snapchat-1757390130.jpg."
+          "Store and display all typed answers in a hidden owner/admin section or submission summary panel so that I (the creator) can see exactly what answers she typed."
         ]
       },
       "acceptanceCriteria": [
-        "The repository includes `Snapchat-1757390130.jpg` under the app’s public assets directory and the puzzle loads it successfully."
+        "There is a discoverable-but-hidden way to open the admin view (e.g., a URL toggle like a query param or hash).",
+        "The admin view displays a list of submissions with the three answers shown verbatim (no masking or truncation by default).",
+        "The admin view is not shown during the normal lock → questions → reveal experience unless explicitly opened."
+      ]
+    },
+    {
+      "id": "REQ-7",
+      "text": "Implement the Rose Day reveal page shown after all 3 questions are completed, including the provided romantic message in a stylish, premium-feel typography and a footer line exactly: “Unlocked with love, only for Vedu 🌹”.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "After All 3 Questions – Unlock Rose Day Page:\nReveal the Rose Day surprise page with soft animation.\nDisplay this romantic & flirty message in a stylish font:\n**“This Rose Day, I won’t send you a rose, Vedu…\nBecause roses fade, but my feelings for you don’t.\nYour smile flirts with my heart,\nyour eyes steal my calm,\nand somehow… you don’t even try.\nIf love had a favorite person,\nit would always be you, Vedu.\nHappy Rose Day, my beautiful Vedu 🌹❤️”**\n...\nFooter:\nAdd a small romantic footer line: “Unlocked with love, only for Vedu 🌹”"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The reveal page displays the message text exactly as provided (including punctuation, line breaks/formatting as closely as feasible, and emojis).",
+        "The footer line matches exactly (including emoji).",
+        "The reveal appears with a soft animation/transition (no abrupt cut)."
+      ]
+    },
+    {
+      "id": "REQ-8",
+      "text": "Add the reveal-page button labeled exactly “This rose is only for you, Vedu 🌹”; when clicked, show a soft popup/dialog with the exact text “You’re my forever rose ❤️”.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Button Interaction:\nAdd a button: “This rose is only for you, Vedu 🌹”\nOn click, show a soft popup: “You’re my forever rose ❤️”"
+        ]
+      },
+      "acceptanceCriteria": [
+        "The reveal button label matches exactly (including emoji).",
+        "Clicking/tapping opens a modal/popup with the exact popup text (including emoji).",
+        "The popup can be dismissed via an explicit close action and by typical dialog interactions (e.g., close button / escape)."
+      ]
+    },
+    {
+      "id": "REQ-9",
+      "text": "Apply a rose-themed visual design using soft red, pink, and white, with smooth transitions and a floating rose petals animation overlay that feels elegant and not distracting.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "The website should be mobile-first, elegant, and emotional with rose-themed design.\nUse soft red, pink, and white colors, floating rose petals animation, and smooth transitions."
+        ]
+      },
+      "acceptanceCriteria": [
+        "A rose-petal floating animation is visible on the main user flow screens (lock, questions, reveal) and does not block interactions (pointer-events disabled).",
+        "Colors and styling match a soft red/pink/white premium Valentine-style feel (no harsh/neon palette).",
+        "Transitions between lock/questions/reveal are smooth (e.g., fade/slide), consistent, and performant on mobile."
+      ]
+    },
+    {
+      "id": "REQ-10",
+      "text": "Include optional romantic background music controlled by a user-initiated toggle (no autoplay) and ensure the site remains fully functional if the audio asset is missing.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-2"
+        ],
+        "quotes": [
+          "Use smooth scrolling, romantic music (optional), and a premium Valentine-style feel."
+        ]
+      },
+      "acceptanceCriteria": [
+        "Music playback starts only after a user gesture (tap/click).",
+        "If the configured audio file is not available, the music control does not break the rest of the UI.",
+        "Music can be toggled on/off during the experience."
       ]
     }
   ],
   "constraints": [
-    "Do not change any existing sections, layout, text, colors, gradients, or animations anywhere on the site except inserting the new “Unlock Our Moments 💖” section and adding a locked/unlocked state to the two existing cards until the puzzle is solved.",
-    "Use only the uploaded photo `Snapchat-1757390130.jpg` for the puzzle; do not generate or use any random/stock images.",
-    "Do not add any backend functionality; keep the Motoko canister unchanged."
+    "Use English for all user-facing text.",
+    "Frontend must be React + TypeScript with Tailwind and existing shadcn/ui components composed (do not edit read-only UI component sources under frontend/src/components/ui).",
+    "Do not edit files listed in frontend.immutablePaths (e.g., useActor/useInternetIdentity/main.tsx).",
+    "Backend must remain a single Motoko actor in backend/main.mo; do not introduce additional backend services."
   ],
   "nonGoals": [
-    "Do not change navigation structure or add URL routing.",
-    "Do not redesign or restyle the existing “Our Moments Together 💖” section or its cards beyond locked/disabled visuals and click-blocking.",
-    "Do not add new puzzles, difficulty levels, timers, scoring, or additional media."
+    "Do not implement third-party authentication providers (only Internet Identity is available; not required for this request).",
+    "Do not add real-time features (no WebSockets/live updates).",
+    "Do not add external databases or external storage services.",
+    "Do not build a multi-page URL router unless necessary; keep navigation simple and app-internal."
   ],
   "imageRequirements": {
     "required": [],
